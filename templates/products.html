@@ -7,18 +7,18 @@
   <title>Products</title>
 
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="{% static 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback' %}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
   <!-- IonIcons -->
-  <link rel="stylesheet" href="{% static 'https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css' %}">
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
 
-  <link rel="stylesheet" href="{% static 'https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' %}">
-  <script src="{% static 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js' %}"></script>
-  <script src="{% static 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js' %}"></script>
-  <script src="{% static 'https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js' %}"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </head>
 <!--
@@ -84,13 +84,13 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/clients/" class="nav-link">
+            <a href="/bolim/clientlar/" class="nav-link">
               <i class="nav-icon far fa-circle text-danger"></i>
               <p class="text">Clients</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="goods" class="nav-link active">
+            <a href="/bolim/mahsulotlar/" class="nav-link active">
               <i class="nav-icon far fa-circle text-info"></i>
               <p>Products</p>
             </a>
@@ -130,6 +130,7 @@
                 </div>
             </div>
             <div class="card-body">
+
                 <table class="table" style="text-align: center;">
                     <thead>
                         <tr>
@@ -140,18 +141,25 @@
                             <th scope="col" style="text-align: center;">Miqdori</th>
                             <th scope="col" style="text-align: center;"></th>
                         </tr>
+
                     </thead>
                     <tbody>
+                        {%for mahsulot in mahsulotlar %}
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Un</td>
-                            <td>Qozoq Oliy navi</td>
-                            <td>530000 so'm</td>
-                            <td>50</td>
+
+                            <th scope="row">{{mahsulot.id}}</th>
+                            <td>{{mahsulot.nom}}</td>
+                            <td>{{mahsulot.brend}}</td>
+                            <td>{{mahsulot.narx}}</td>
+                            <td>{{mahsulot.miqdor}} {{mahsulot.olchov}}</td>
                             <td><a href="#"><button type="submit" class="btn btn-danger" data-toggle="modal">Tahrirlash</button></a></td>
+
                         </tr>
+                        {% endfor %}
                     </tbody>
+
                 </table>
+
             </div>
         </div>
     </div>
