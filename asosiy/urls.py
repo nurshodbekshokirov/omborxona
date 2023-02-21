@@ -3,6 +3,8 @@ from .views import *
 urlpatterns = [
     path('', Bolimlarview.as_view()),
     path('mahsulotlar/', Mahsulotlarview.as_view(), name='mahsulotlar'),
-    path('clientlar/',Clientview.as_view(), name='clientlar')
+    path('clientlar/',Clientview.as_view(), name='clientlar'),
+    path('mahsulot_del<int:pk>/', MahsulotdeleteView.as_view(), name='mahsulot-del'),
+    path('mahsulot_update<int:pk>/', MahsulotupdateView.as_view(), name='mahsulot-update'),
 
 ]

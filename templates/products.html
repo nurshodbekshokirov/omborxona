@@ -147,12 +147,13 @@
                         {%for mahsulot in mahsulotlar %}
                         <tr>
 
-                            <th scope="row">{{mahsulot.id}}</th>
+                            <th scope="row">{{forloop.counter}}</th>
                             <td>{{mahsulot.nom}}</td>
                             <td>{{mahsulot.brend}}</td>
                             <td>{{mahsulot.narx}}</td>
                             <td>{{mahsulot.miqdor}} {{mahsulot.olchov}}</td>
-                            <td><a href="#"><button type="submit" class="btn btn-danger" data-toggle="modal">Tahrirlash</button></a></td>
+                            <td><a href="{% url 'mahsulot-update' mahsulot.id %}"><button  class="btn btn-danger" data-toggle="modal">Tahrirlash</button></a>
+                            <a href="{% url 'mahsulot-del' mahsulot.id %}"><button  class="btn btn-warning" data-toggle="modal">Ochirish</button></a></td>
 
                         </tr>
                         {% endfor %}
@@ -176,7 +177,7 @@
           </div>
     
           <!-- Modal body -->
-          <form action="#" id="new-product-form" >
+          <form method="post" >
             <div class="modal-body">
               <label for="new-product-name">Nomi:</label>
               <input type="text" name="pr_name" placeholder="Mahsulot nomi..." id="new-product-name" class="form-control" required>

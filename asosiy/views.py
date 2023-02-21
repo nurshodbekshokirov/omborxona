@@ -29,15 +29,37 @@ class Bolimlarview(View):
     def get(self, request):
         return render(request, 'bulimlar.html')
 class Mahsulotlarview(View):
-    def get(self,request):
+    def get(self, request):
 
 
 
         data = {
             'mahsulotlar': Mahsulot.objects.filter(ombor=Ombor.objects.get(user=request.user)),
 
+
         }
         return render(request, 'products.html', data)
+
+
+class MahsulotdeleteView(View):
+    def get(self, request, pk):
+        pr = Mahsulot.objects.get(id=pk)
+        if pr.ombor == Ombor.objects.get(user=request.user):
+            pr.delete()
+        return redirect('mahsulotlar')
+
+class MahsulotupdateView(View):
+    def get(self, request, pk):
+        pr = Mahsulot.objects.get(id=pk)
+        if pr.ombor == Ombor.objects.get(user=request.user):
+
+            return render(request, 'product_update.html', {'product' : pr})
+    def post(self,request, pk):
+        Mahsulot.objects.filter(id=pk).update(
+            miqdor = request.POST.get('amount'),
+            narx = request.POST.get('price'),
+        )
+        return redirect('mahsulotlar')
 class Clientview(View):
     def get(self,request):
         data = {
