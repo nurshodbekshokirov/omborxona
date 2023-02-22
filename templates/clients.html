@@ -126,8 +126,15 @@
                     <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Mijoz qo'shish</button>
                 </div>
             </div>
+            <form action="/bolim/client_search/" method="POST"> {% csrf_token %}
+            <input type="text" name="qidirish" >
+            <button type="submit">Qidirish</button>
+            </form>
+
+
             <div class="card-body">
                 <table class="table" style="text-align: center;">
+
                     <thead>
                         <tr>
                             <th scope="col" style="width: 15px">T/r</th>
@@ -146,7 +153,8 @@
                             <td>{{i.nom}}</td>
                             <td>{{i.tel}}</td>
                             <td>{{i.manzil}}</td>
-                            <td><a href="#"><button type="submit" class="btn btn-danger" data-toggle="modal">Tahrirlash</button></a></td>
+                            <td><a href="{% url 'client-update' i.id %}"><button  class="btn btn-danger" data-toggle="modal">Tahrirlash</button></a>
+                            <a href="{% url 'client-del' i.id%}"><button  class="btn btn-warning" data-toggle="modal">Ochirish</button></a></td>
                         </tr>
                         {% endfor %}
                     </tbody>

@@ -129,6 +129,10 @@
                   <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Maxsulot qo'shish</button>
                 </div>
             </div>
+            <form action="/bolim/product_search/" method="POST"> {% csrf_token %}
+            <input type="text" name="qidirish" >
+            <button type="submit">Qidirish</button>
+            </form>
             <div class="card-body">
 
                 <table class="table" style="text-align: center;">
@@ -177,7 +181,7 @@
           </div>
     
           <!-- Modal body -->
-          <form method="post" >
+          <form method="post" >{% csrf_token %}
             <div class="modal-body">
               <label for="new-product-name">Nomi:</label>
               <input type="text" name="pr_name" placeholder="Mahsulot nomi..." id="new-product-name" class="form-control" required>
@@ -191,6 +195,10 @@
               <label for="new-product-name">Miqdori:</label>
               <input type="number" name="pr_amount" placeholder="Mahsulot miqdori..." id="new-product-amount" class="form-control" required>
               <br>
+              <label for="new-product-name">Olchovi:</label>
+              <input type="text" name="pr_olchov" placeholder="Mahsulot olchovi..." id="new-product-olchov" class="form-control" required><br>
+
+
             </div>
     
           <!-- Modal footer -->

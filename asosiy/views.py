@@ -37,8 +37,21 @@ class Mahsulotlarview(View):
             'mahsulotlar': Mahsulot.objects.filter(ombor=Ombor.objects.get(user=request.user)),
 
 
+
         }
         return render(request, 'products.html', data)
+    def post(self, request):
+        if request.user.is_authenticated:
+            Mahsulot.objects.create(
+                nom = request.POST.get('pr_name'),
+                brend = request.POST.get('pr_brand'),
+                miqdor = request.POST.get('pr_amount'),
+                narx = request.POST.get('pr_price'),
+                olchov = request.POST.get('pr_olchov'),
+                ombor = Ombor.objects.get(user=request.user)
+            )
+            return redirect('mahsulotlar')
+        return redirect('/')
 
 
 class MahsulotdeleteView(View):
@@ -47,6 +60,15 @@ class MahsulotdeleteView(View):
         if pr.ombor == Ombor.objects.get(user=request.user):
             pr.delete()
         return redirect('mahsulotlar')
+
+class ClientsdeleteView(View):
+    def get(self, request, pk):
+        pr = Client.objects.get(id=pk)
+        if pr.ombor == Ombor.objects.get(user=request.user):
+            pr.delete()
+        return redirect('clientlar')
+
+
 
 class MahsulotupdateView(View):
     def get(self, request, pk):
@@ -60,6 +82,18 @@ class MahsulotupdateView(View):
             narx = request.POST.get('price'),
         )
         return redirect('mahsulotlar')
+class Clientupdateview(View):
+    def get(self,request, pk):
+        pr = Client.objects.get(id=pk)
+        if pr.ombor == Ombor.objects.get(user=request.user):
+            return render(request, 'client_update.html', {'client':pr})
+    def post(self, request, pk):
+
+
+        Client.objects.filter(id=pk).update(
+            tel = request.POST.get('client_phone')
+        )
+        return redirect('clientlar')
 class Clientview(View):
     def get(self,request):
         data = {
@@ -69,13 +103,53 @@ class Clientview(View):
         return render(request, 'clients.html', data)
     def post(self, request):
         if request.user.is_authenticated:
+
+
             form = ClientForm(request.POST)
             if form.is_valid():
                 form.save()
 
                 return redirect('/bolim/clientlar/')
             return redirect('/bolim/')
+
         return redirect('/')
+class Client_search(View):
+    def get(self, request):
+        data = {
+            'clientlar': Client.objects.filter(ombor=Ombor.objects.get(user=request.user)),
+        }
+        return render(request, 'clients.html', data)
+    def post(self, request):
+        qidiruv_soz = request.POST.get('qidirish')
+        client = Client.objects.filter(ism__contains=qidiruv_soz) | Client.objects.filter(nom__contains=qidiruv_soz) | Client.objects.filter(tel__contains=qidiruv_soz) | Client.objects.filter(manzil__contains=qidiruv_soz)
+        if Client.objects.filter(ombor=Ombor.objects.get(user=request.user)):
+            data = {'clientlar': client}
+            return render(request, 'clients.html', data)
+        return redirect('clientlar')
+class Mahsulotsearch(View):
+    def get(self, request):
+
+
+
+        data = {
+            'mahsulotlar': Mahsulot.objects.filter(ombor=Ombor.objects.get(user=request.user)),
+
+
+
+        }
+        return render(request, 'products.html', data)
+    def post(self,request):
+        qidiruv_soz = request.POST.get('qidirish')
+        mahsulot = Mahsulot.objects.filter(nom__contains=qidiruv_soz) | Mahsulot.objects.filter(brend__contains=qidiruv_soz) | Mahsulot.objects.filter(kelgan_sana__contains=qidiruv_soz)
+        if Mahsulot.objects.filter(ombor=Ombor.objects.get(user=request.user)):
+            data = {
+                'mahsulotlar': mahsulot
+
+            }
+            return render(request, 'products.html', data)
+        return redirect('mahsulotlar')
+
+
 
 
 
