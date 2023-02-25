@@ -84,13 +84,13 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="/bolim/clientlar/" class="nav-link">
               <i class="nav-icon far fa-circle text-danger"></i>
               <p class="text">Clients</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="/bolim/mahsulotlar/" class="nav-link">
               <i class="nav-icon far fa-circle text-info"></i>
               <p>Products</p>
             </a>
@@ -127,6 +127,11 @@
             <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
                   <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Statistika qo'shish</button>
+                    <form action="/stats/" method="get">
+                        <input type="text" name="soz">
+                        <button type="submit" class="btn btn-primary" >Qidirish</button>
+
+                    </form>
                 </div>
             </div>
             <div class="card-body">
@@ -143,18 +148,22 @@
                             <th scope="col" style="text-align: center;">Nasiya</th>
                         </tr>
                     </thead>
+
                     <tbody>
+                    {% for stat in stats %}
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Product nomi, brend nomi</td>
-                            <td>Client ismi, do'koni nomi</td>
-                            <td>2022.06.13</td>
-                            <td>30</td>
-                            <td>1260000 so'm</td>
-                            <td>560000 so'm</td>
-                            <td>700000 so'm</td>
-                            <td><a href="#"><button type="submit" class="btn btn-danger" data-toggle="modal">Tahrirlash</button></a></td>
+                            <th scope="row">{{forloop.counter}}</th>
+                            <td>{{stat.mahsulot}}, {{stat.mahsulot.brend}}</td>
+                            <td>{{stat.client.ism}}, {{stat.client.nom}}</td>
+                            <td>{{stat.sana}}</td>
+                            <td>{{stat.miqdori}}</td>
+                            <td>{{stat.summa}}</td>
+                            <td>{{stat.tolandi}}</td>
+                            <td>{{stat.qoldi}}</td>
+                            <td><a href="{% url 'stats-update' stat.id %}"><button type="submit" class="btn btn-danger" data-toggle="modal">Tahrirlash</button></a></td>
+                            <td><a href="{% url 'stats-del' stat.id %}"><button type="submit" class="btn btn-warning" data-toggle="modal">Ochirish</button></a></td>
                         </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -173,28 +182,35 @@
           </div>
     
           <!-- Modal body -->
-          <form action="#" id="new-product-form" method="post">{% csrf_token %}
+          <form  id="new-product-form" method="post">{% csrf_token %}
             <div class="modal-body">
               <label for="product">Product:</label>
-             <input type="datetime-local" name="sana" placeholder="Sana" id="product" class="form-control" required>
+                <select name="mahsulot" id="product" class="form-control">
+                    {% for mahsulot in mahsulotlar %}
+                    <option value="{{mahsulot.id}}">{{mahsulot.nom}}</option>
+                    {% endfor %}
+                </select>
+
                 <br>
               <label for="client">Client:</label>
-                <input type="datetime-local" name="sana" placeholder="Sana" id="client" class="form-control" required>
-              <br>
-              <label for="sana">Sana:</label>
-              <input type="datetime-local" name="sana" placeholder="Sana" id="sana" class="form-control" required>
+                <select name="client" id="client" class="form-control">
+                    {% for client in clientlar %}
+                    <option value="{{client.id}}">{{client.nom}}</option>
+                    {% endfor %}
+                </select>
+
+
+
               <br>
                 <label for="miqdor">Miqdor:</label>
-              <input type="number" name="miqdor" placeholder="Miqdor" id="miqdor" class="form-control" required>
+              <input type="number" name="miqdor" placeholder="Miqdor.." id="miqdor" class="form-control" required>
               <br>
               <label for="umumiy_summa">Umumiy summa:</label>
-              <input type="number" name="summa" placeholder="Umumiy summa" id="umumiy_summa" class="form-control" required>
+              <input type="number" name="summa" placeholder="Umumiy summa.." id="umumiy_summa" class="form-control" required>
               <br>
-                <label for="nasiya">Nasiya:</label>
-              <input type="number" name="nasiya" placeholder="Nasiya" id="nasiya" class="form-control" required>
-              <br>
+
                 <label for="tolandi">To'landi:</label>
-              <input type="number" name="tolandi" placeholder="To'landi" id="tolandi" class="form-control" required>
+              <input type="number" name="tolandi" placeholder="To'landi.." id="tolandi" class="form-control" required>
               <br>
             </div>
     

@@ -124,12 +124,16 @@
             <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Mijoz qo'shish</button>
+                    <form action="/bolim/clientlar/" method="get">
+                        <input type="text" name="qidirish">
+                        <button type="submit" class="btn btn-primary" >Qidirish</button>
+
+                    </form>
+
+            </form>
                 </div>
             </div>
-            <form action="/bolim/client_search/" method="POST"> {% csrf_token %}
-            <input type="text" name="qidirish" >
-            <button type="submit">Qidirish</button>
-            </form>
+
 
 
             <div class="card-body">

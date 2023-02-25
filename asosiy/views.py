@@ -30,15 +30,14 @@ class Bolimlarview(View):
         return render(request, 'bulimlar.html')
 class Mahsulotlarview(View):
     def get(self, request):
+        mahsulot = Mahsulot.objects.filter(ombor__user=request.user)
+        qidiruv_soz = request.GET.get('qidirish')
+        if qidiruv_soz is not None:
+            mahsulot = Mahsulot.objects.filter(ombor__user=request.user, nom__contains=qidiruv_soz) | Mahsulot.objects.filter(ombor__user=request.user, brend__contains=qidiruv_soz) | Mahsulot.objects.filter(ombor__user=request.user,kelgan_sana__contains=qidiruv_soz)
 
 
 
-        data = {
-            'mahsulotlar': Mahsulot.objects.filter(ombor=Ombor.objects.get(user=request.user)),
-
-
-
-        }
+        data = { 'mahsulotlar': mahsulot}
         return render(request, 'products.html', data)
     def post(self, request):
         if request.user.is_authenticated:
@@ -95,10 +94,14 @@ class Clientupdateview(View):
         )
         return redirect('clientlar')
 class Clientview(View):
-    def get(self,request):
+    def get(self, request):
+        client = Client.objects.filter(ombor=Ombor.objects.get(user=request.user))
+        qidiruv_soz = request.GET.get('qidirish')
+        if qidiruv_soz is not None:
+            client = Client.objects.filter(ombor__user=request.user, ism__contains=qidiruv_soz) | Client.objects.filter(ombor__user=request.user,nom__contains=qidiruv_soz) | Client.objects.filter(ombor__user=request.user,tel__contains=qidiruv_soz) | Client.objects.filter(ombor__user=request.user, manzil__contains=qidiruv_soz)
         data = {
-            'clientlar': Client.objects.filter(ombor=Ombor.objects.get(user=request.user)),
-            'forma':ClientForm
+            'clientlar': client,
+            'forma': ClientForm
         }
         return render(request, 'clients.html', data)
     def post(self, request):
@@ -113,41 +116,10 @@ class Clientview(View):
             return redirect('/bolim/')
 
         return redirect('/')
-class Client_search(View):
-    def get(self, request):
-        data = {
-            'clientlar': Client.objects.filter(ombor=Ombor.objects.get(user=request.user)),
-        }
-        return render(request, 'clients.html', data)
-    def post(self, request):
-        qidiruv_soz = request.POST.get('qidirish')
-        client = Client.objects.filter(ism__contains=qidiruv_soz) | Client.objects.filter(nom__contains=qidiruv_soz) | Client.objects.filter(tel__contains=qidiruv_soz) | Client.objects.filter(manzil__contains=qidiruv_soz)
-        if Client.objects.filter(ombor=Ombor.objects.get(user=request.user)):
-            data = {'clientlar': client}
-            return render(request, 'clients.html', data)
-        return redirect('clientlar')
-class Mahsulotsearch(View):
-    def get(self, request):
 
 
 
-        data = {
-            'mahsulotlar': Mahsulot.objects.filter(ombor=Ombor.objects.get(user=request.user)),
 
-
-
-        }
-        return render(request, 'products.html', data)
-    def post(self,request):
-        qidiruv_soz = request.POST.get('qidirish')
-        mahsulot = Mahsulot.objects.filter(nom__contains=qidiruv_soz) | Mahsulot.objects.filter(brend__contains=qidiruv_soz) | Mahsulot.objects.filter(kelgan_sana__contains=qidiruv_soz)
-        if Mahsulot.objects.filter(ombor=Ombor.objects.get(user=request.user)):
-            data = {
-                'mahsulotlar': mahsulot
-
-            }
-            return render(request, 'products.html', data)
-        return redirect('mahsulotlar')
 
 
 
